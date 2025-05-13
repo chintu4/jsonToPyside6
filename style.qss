@@ -1,0 +1,42 @@
+QPressButton{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    max-width: 100px;
+}
+QPressButton:hover {
+    background-color: #45a049;
+}
+QPressButton:pressed {
+    background-color: #3e8e41;
+}
+QPressButton:disabled {
+    background-color: #e7e7e7;
+    color: black;
+    cursor: not-allowed;
+}
+QPressButton:disabled:hover {
+    background-color: #e7e7e7;
+}
+QPressButton:disabled:pressed {
+    background-color: #e7e7e7;
+}
+QPressButton:focus {
+    outline: none;
+}
+QPressButton:focus:hover {
+    background-color: #45a049;
+}
+QPressButton:focus:pressed {
+    background-color: #3e8e41;
+}
+QPressButton:focus:disabled {
+    background-color: #e7e7e7;
+}

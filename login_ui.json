@@ -1,0 +1,68 @@
+{
+  "name": "loginPage",
+  "layout": {
+    "type": "QVBoxLayout",
+    "properties": {
+      "alignment": "AlignCenter",
+      "spacing": 20,
+      "margin": 40
+    },
+    "children": [
+      {
+        "widget": "QLabel",
+        "text": "🔐 Login to MyApp",
+        "properties": {
+          "alignment": "AlignCenter",
+          "styleSheet": "font-size: 24px; font-weight: bold; color: #2c3e50;"
+        }
+      },
+      {
+        "widget": "QLineEdit",
+        "name": "usernameInput",
+        "properties": {
+          "placeholderText": "Username",
+          "styleSheet": "padding: 8px; border: 1px solid #ccc; border-radius: 5px;"
+        }
+      },
+      {
+        "widget": "QLineEdit",
+        "name": "passwordInput",
+        "properties": {
+          "placeholderText": "Password",
+          "echoMode": "Password",
+          "styleSheet": "padding: 8px; border: 1px solid #ccc; border-radius: 5px;"
+        }
+      },
+      {
+        "widget": "QPushButton",
+        "text": "Login",
+        "events": {
+          "clicked": "on_login_pressed"
+        },
+        "animations": {
+          "hover": {
+            "property": "geometry",
+            "startValue": [100, 100, 160, 40],
+            "endValue": [100, 100, 180, 40],
+            "duration": 200,
+            "easingCurve": "OutCubic"
+          }
+        },
+        "properties": {
+          "styleSheet": "background-color: #3498db; color: white; padding: 10px; border-radius: 6px;"
+        }
+      },
+      {
+        "widget": "QLabel",
+        "text": "Forgot password?",
+        "properties": {
+          "alignment": "AlignRight",
+          "styleSheet": "color: #2980b9; font-size: 11px;"
+        }
+      }
+    ]
+  },
+  "on_login_pressed": {
+  "script": "print('Logging in with:', usernameInput.text(), passwordInput.text())\nmain_window.centralWidget().setCurrentIndex(1)"
+}
+}

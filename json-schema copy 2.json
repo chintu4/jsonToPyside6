@@ -1,0 +1,144 @@
+{
+  "mainWindow": {
+    "title": "App Title",
+    "geometry": [100, 100, 1024, 768],
+    "icon": "assets/icon.png",
+    "stylesheet": "styles/app.qss",
+    "statusBar": true,
+    "menus": [
+      {
+        "title": "File",
+        "actions": [
+          { "text": "New", "event": "on_new", "shortcut": "Ctrl+N" },
+          { "text": "Exit", "event": "on_exit", "shortcut": "Ctrl+Q" }
+        ]
+      }
+    ],
+    "toolbars": [
+      {
+        "title": "Main",
+        "actions": [
+          { "icon": "icons/save.svg", "tooltip": "Save", "event": "on_save" }
+        ]
+      }
+    ],
+    "dockWidgets": [
+      {
+        "title": "Sidebar",
+        "name": "sidebarDock",
+        "area": "LeftDockWidgetArea",
+        "widget": {
+          "type": "QListWidget",
+          "name": "navList",
+          "items": ["Home", "Settings", "Help"]
+        }
+      }
+    ],
+    "centralWidget": {
+      "type": "QStackedWidget",
+      "pages": [
+        {
+          "name": "mainPage",
+          "layout": {
+            "type": "QVBoxLayout",
+            "children": [
+              {
+                "widget": "QLabel",
+                "name": "welcomeLabel",
+                "text": "Welcome to the App!",
+                "properties": {
+                  "alignment": "AlignCenter",
+                  "styleSheet": "font-size: 20px;"
+                }
+              },
+              {
+                "widget": "QPushButton",
+                "name": "nextBtn",
+                "text": "Next",
+                "events": {
+                  "clicked": "go_to_settings"
+                },
+                "animations": {
+                  "hover": {
+                    "property": "geometry",
+                    "startValue": [100, 100, 100, 40],
+                    "endValue": [100, 100, 120, 40],
+                    "duration": 300,
+                    "easingCurve": "OutBounce"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "settingsPage",
+          "layout": {
+            "type": "QFormLayout",
+            "children": [
+              {
+                "widget": "QLineEdit",
+                "name": "usernameField",
+                "label": "Username"
+              },
+              {
+                "widget": "QComboBox",
+                "name": "themeSelect",
+                "label": "Theme",
+                "items": ["Light", "Dark"]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+
+  "models": [
+    {
+      "type": "QStandardItemModel",
+      "name": "userModel",
+      "headers": ["ID", "Name", "Status"],
+      "data": [
+        [1, "Alice", "Active"],
+        [2, "Bob", "Inactive"]
+      ]
+    }
+  ],
+
+  "views": [
+    {
+      "type": "QTableView",
+      "model": "userModel",
+      "properties": {
+        "alternatingRowColors": true
+      }
+    }
+  ],
+
+  "dialogs": [
+    {
+      "type": "QMessageBox",
+      "name": "infoDialog",
+      "title": "Information",
+      "text": "Action completed",
+      "icon": "Information",
+      "buttons": ["Ok"]
+    }
+  ],
+
+  "functions": {
+    "on_new": {
+      "script": "print('New file created')"
+    },
+    "on_exit": {
+      "script": "QApplication.quit()"
+    },
+    "on_save": {
+      "script": "print('Saving...')"
+    },
+    "go_to_settings": {
+      "script": "main_window.centralWidget().setCurrentIndex(1)"
+    }
+  }
+}

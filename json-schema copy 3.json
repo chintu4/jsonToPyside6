@@ -1,0 +1,208 @@
+{
+  "mainWindow": {
+    "title": "My Application",
+    "geometry": [100, 100, 1024, 768],
+    "icon": "assets/app_icon.svg",
+    "stylesheet": "styles/app.qss",
+    "statusBar": true,
+
+    "menus": [
+      {
+        "title": "File",
+        "actions": [
+          { "text": "New", "event": "on_new_clicked", "shortcut": "Ctrl+N" },
+          { "text": "Exit", "event": "on_exit_clicked", "shortcut": "Ctrl+Q" }
+        ]
+      }
+    ],
+
+    "toolbars": [
+      {
+        "title": "Main Toolbar",
+        "actions": [
+          { "icon": "icons/save.svg", "tooltip": "Save the file", "event": "on_save" }
+        ]
+      }
+    ],
+
+    "dockWidgets": [
+      {
+        "title": "Navigation",
+        "name": "navDock",
+        "area": "LeftDockWidgetArea",
+        "widget": {
+          "type": "QListWidget",
+          "name": "sidebarList",
+          "items": ["Dashboard", "Settings", "Logout"]
+        }
+      }
+    ],
+
+    "centralWidget": {
+      "type": "QStackedWidget",
+      "pages": [
+        {
+          "name": "loginPage",
+          "layout": {
+            "type": "QVBoxLayout",
+            "children": [
+              {
+                "widget": "QLabel",
+                "name": "titleLabel",
+                "text": "Login to the App",
+                "properties": {
+                  "alignment": "AlignCenter",
+                  "styleSheet": "font-size: 22px; font-weight: bold;"
+                }
+              },
+              {
+                "widget": "QLineEdit",
+                "name": "usernameInput",
+                "properties": {
+                  "placeholderText": "Username"
+                }
+              },
+              {
+                "widget": "QLineEdit",
+                "name": "passwordInput",
+                "properties": {
+                  "placeholderText": "Password",
+                  "echoMode": "Password"
+                }
+              },
+              {
+                "widget": "QPushButton",
+                "name": "loginButton",
+                "text": "Login",
+                "events": {
+                  "clicked": "on_login_pressed"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+
+  "models": [
+    {
+      "type": "QStandardItemModel",
+      "name": "userTableModel",
+      "headers": ["ID", "Name", "Email"],
+      "data": [
+        [1, "Alice", "alice@example.com"],
+        [2, "Bob", "bob@example.com"]
+      ]
+    }
+  ],
+
+  "views": [
+    {
+      "type": "QTableView",
+      "model": "userTableModel",
+      "properties": {
+        "alternatingRowColors": true,
+        "selectionBehavior": "SelectRows"
+      }
+    }
+  ],
+
+  "dialogs": [
+    {
+      "type": "QMessageBox",
+      "name": "confirmDialog",
+      "title": "Confirm Action",
+      "text": "Are you sure?",
+      "icon": "Question",
+      "buttons": ["Yes", "No"]
+    }
+  ],
+
+  "functions": {
+    "on_login_pressed": {
+      "script": "print('Login clicked:', usernameInput.text())"
+    },
+    "on_save": {
+      "script": "print('Saving changes...')"
+    },
+    "on_exit_clicked": {
+      "script": "QApplication.quit()"
+    }
+  },
+
+  "extensions": {
+    "computedProperties": {
+      "loginButton": {
+        "enabled": "usernameInput.text.length > 0 && passwordInput.text.length > 0"
+      }
+    },
+    "dataBindings": {
+      "loginPage": {
+        "usernameInput": {
+          "bindTo": "user.username",
+          "mode": "twoWay"
+        },
+        "passwordInput": {
+          "bindTo": "user.password",
+          "mode": "twoWay"
+        }
+      }
+    },
+    "accessibility": {
+      "loginButton": {
+        "role": "button",
+        "description": "Click to login"
+      },
+      "usernameInput": {
+        "role": "textbox",
+        "description": "Enter your username"
+      }
+    },
+    "conditions": {
+      "passwordInput": {
+        "visible": "usernameInput.text !== ''"
+      }
+    },
+    "validators": {
+      "usernameInput": {
+        "regex": "^[a-zA-Z0-9_]{3,16}$",
+        "errorMessage": "Username must be 3-16 letters, numbers, or underscores"
+      },
+      "passwordInput": {
+        "minLength": 6,
+        "errorMessage": "Password must be at least 6 characters"
+      }
+    },
+    "layouts": {
+      "LoginForm": {
+        "type": "QVBoxLayout",
+        "children": [
+          {
+            "widget": "QLineEdit",
+            "name": "usernameInput",
+            "properties": {
+              "placeholderText": "Username"
+            }
+          },
+          {
+            "widget": "QLineEdit",
+            "name": "passwordInput",
+            "properties": {
+              "placeholderText": "Password",
+              "echoMode": "Password"
+            }
+          },
+          {
+            "widget": "QPushButton",
+            "name": "loginButton",
+            "text": "Login",
+            "events": {
+              "clicked": "on_login_pressed"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

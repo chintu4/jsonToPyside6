@@ -1,0 +1,72 @@
+{
+  "name": "loginPage",
+  
+  "layout": {
+    "type": "QVBoxLayout",        
+    "properties": {
+      "alignment": "AlignCenter",
+      "spacing": 20,             
+      "margin": 40            
+      
+    },
+    "children": [
+      {
+        "widget": "QLabel",      
+        "name": "titleLabel",    
+        "text": "🔐 Login to MyApp",
+        "properties": {
+          "alignment": "AlignCenter",
+          "styleSheet": "font-size:24px; font-weight:bold;"
+        }
+      },
+      {
+        "widget": "QLineEdit",
+        "name": "usernameInput",
+        "properties": {
+          "placeholderText": "Username",
+          "styleSheet": "padding:8px; border:1px solid #ccc;"
+        }
+      },
+      {
+        "widget": "QLineEdit",
+        "name": "passwordInput",
+        "properties": {
+          "placeholderText": "Password",
+          "echoMode": "Password",
+          "styleSheet": "padding:8px; border:1px solid #ccc;"
+        }
+      },
+      {
+        "widget": "QPushButton",
+        "name": "loginButton",
+        "text": "Login",
+        "events": {
+          "clicked": "on_login_pressed"  
+        },
+        "animations": {
+          "hover": {
+            "property": "geometry",
+            "startValue": [100,100,160,40],
+            "endValue":   [100,100,180,40],
+            "duration":   200,           
+            "easingCurve":"OutCubic"     
+          }
+        },
+        "properties": {
+          "styleSheet": "background-color:#3498db; color:white; padding:10px;"
+        }
+      }
+    ]
+  },
+
+  
+  "styles": {
+    "primaryBtn": "background-color:#3498db; color:white;"
+  },
+
+  
+  "resources": [
+    "icons/login.svg",
+    "styles/common.qss"
+  ]
+}

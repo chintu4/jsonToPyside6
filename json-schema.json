@@ -1,0 +1,156 @@
+{
+  "mainWindow": {
+    "title": "MyApp",
+    "geometry": [100, 100, 800, 600],
+    "icon": "assets/app_icon.svg",
+    "splash-icon":"assets/app_icon.svg"
+  },
+
+  "stylesheet": "styles/app.qss",
+
+  "menus": [
+    {
+      "title": "File",
+      "actions": [
+        { "text": "Open", "event": "on_open_file", "shortcut": "Ctrl+O" },
+        { "text": "Exit", "event": "on_exit" }
+      ]
+    }
+  ],
+
+  "toolbars": [
+    {
+      "title": "Main",
+      "actions": [
+        { "icon": "icons/save.svg", "tooltip": "Save", "event": "on_save" }
+      ]
+    }
+  ],
+
+  "ui": {
+    "centralWidget": {
+      "type": "QStackedWidget",
+      "pages": [
+        {
+          "name": "homePage",
+          "layout": {
+            "type": "QVBoxLayout",
+            "children": [
+              {
+                "widget": "QLabel",
+                "text": "Welcome",
+                "properties": {
+                  "alignment": "AlignCenter"
+                }
+              },
+              {
+                "widget": "QPushButton",
+                "text": "Next",
+                "events": {
+                  "clicked": "go_to_settings"
+                },
+                "animations": {
+                  "hover": {
+                    "property": "geometry",
+                    "startValue": [100, 100, 100, 40],
+                    "endValue": [100, 100, 120, 40],
+                    "duration": 300,
+                    "easingCurve": "OutBounce"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "settingsPage",
+          "layout": {
+            "type": "QFormLayout",
+            "children": [
+              {
+                "widget": "QLineEdit",
+                "name": "usernameField",
+                "label": "Username"
+              },
+              {
+                "widget": "QCheckBox",
+                "text": "Enable notifications"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+
+  "dialogs": [
+    {
+      "type": "QMessageBox",
+      "name": "infoDialog",
+      "title": "Information",
+      "text": "Action completed",
+      "icon": "Information",
+      "buttons": ["Ok"]
+    },
+    {
+      "type": "QDialog",
+      "name": "customDialog",
+      "title": "Advanced",
+      "layout": {
+        "type": "QVBoxLayout",
+        "children": [
+          {
+            "widget": "QLabel",
+            "text": "Enter data"
+          },
+          {
+            "widget": "QLineEdit",
+            "name": "inputBox"
+          },
+          {
+            "widget": "QPushButton",
+            "text": "Submit",
+            "events": {
+              "clicked": "submit_dialog_data"
+            }
+          }
+        ]
+      }
+    }
+  ],
+
+  "models": [
+    {
+      "type": "QStandardItemModel",
+      "name": "tableModel",
+      "headers": ["ID", "Name", "Status"],
+      "data": [
+        [1, "Alice", "Active"],
+        [2, "Bob", "Inactive"]
+      ]
+    }
+  ],
+
+  "views": [
+    {
+      "type": "QTableView",
+      "model": "tableModel",
+      "properties": {
+        "alternatingRowColors": true
+      }
+    }
+  ],
+
+  "functions": {
+    "on_open_file": {
+      "script": "print('File opened')"
+    },
+    "go_to_settings": {
+      "script": "main_window.centralWidget().setCurrentIndex(1)"
+    }
+    ,
+    "submit_dialog_data": {
+      "script": "print('Submitted:', inputBox.text())"
+    }
+  }
+}

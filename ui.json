@@ -1,0 +1,16 @@
+{
+   "layout": {
+       "type": "QVBoxLayout",
+       "children": [
+           {
+               "widget": "QPushButton",
+               "text": "Login",
+               "events": {
+                   "clicked": "on_login_pressed"
+               },
+               "properties": {
+                   "styleSheet": "background-color: #3498db; color: white; padding: 10px; border-radius: 6px;max-width:100px"
+               }
+           }
+       ]
+}}
