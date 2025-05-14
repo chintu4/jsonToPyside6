@@ -1,176 +1,209 @@
-# Json to pyside6 convert
+# JSON-PySide6 UI Builder
+
+A dynamic UI builder for PySide6 applications that creates interfaces from JSON specifications.
 
 ## Features
-1. can be to load only a form in your ui
-2. can be used to load only a layout from json
-3. 
+1. Define entire UIs using JSON
+2. Load only a form or layout component from JSON
+3. Integrate JSON-defined UI components into existing applications
+4. Style widgets using QSS 
+5. Connect Python functions to widget events
+6. Support for advanced features like models, views, dialogs, etc.
 
-**I assume i could convert to**
+## Overview
 
-iam putting proper json-schema 
-```
+This project allows you to define PySide6 user interfaces using JSON schemas instead of writing Qt code directly.
+
+### Example Schema
+```json
 {
-    "QVLayout":[
-        {
-            "widget":"QLabel",
-            "text":"ok"  
-        }
-    ]
-}
-```
-
-the json to pyside6 build can return a to dom to build ui upon it 
-the builder could be used to build just a form or just and return using build
-
-> This can even used to build complex ui with proper ui that look first -like designed by professional
-This could be used from simple ui use cases to very large use cases 
-```
-{
-    "singleCenterwidget":[{
-        "widget":"QPushButton",
-        "text":"hello",
-        "icon":"path/to/icon.svg"
-    }
-    ]
-}
-```
-> Layout Always contains array even single center widget
-
-```
-{
-   "ui":{ 
-        "singleCenterwidget":
-        [
-            {
-            "widget":"QPushButton",
-            "text":"hello",
-            "icon":"path/to/icon.svg"
-            }
-        ],
+  "name": "loginPage",
+  
+  "layout": {
+    "type": "QVBoxLayout",        
+    "properties": {
+      "alignment": "AlignCenter",
+      "spacing": 20,             
+      "margin": 40            
     },
-    "stylesheet":"path/to/style.qss",
-    "mainWindow":{
-        "title":"hello"
-    }
-}
-```
-## This appoach ensure ui is built ui formly and expected manner
-```
-{
-   "ui":{ 
-        "QFrame":
-        [
-            {
-            "widget":"QPushButton",
-            "text":"hello",
-            "icon":"path/to/icon.svg"
-            "stylesheet":"background-color:red;color:white;"
-            }
-        ],
-    },
-    
-}
-```
-## Extended Schema 
-```
-{
-  "ui": {
-    "singleCenterwidget": [
+    "children": [
       {
-        "widget": "QPushButton",
-        "name": "my_button",
-        "text": "hello",
-        "icon": "path/to/icon.svg",
+        "widget": "QLabel",      
+        "name": "titleLabel",    
+        "text": "🔐 Login to MyApp",
         "properties": {
-          "toolTip": "Click me",
-          "enabled": true,
-          "minimumSize": [100, 30]
-        },
-        "events": {
-          "clicked": "on_button_click"
-        },
-        "animations": {
-          "hover": {
-            "property": "geometry",
-            "startValue": [10, 10, 100, 30],
-            "endValue": [10, 10, 120, 30],
-            "duration": 300
-          }
+          "alignment": "AlignCenter",
+          "styleSheet": "font-size:24px; font-weight:bold;"
         }
       }
     ]
-  },
-  "layout": {
-    "type": "QVBoxLayout",
-    "spacing": 10,
-    "margin": 10
-  },
-  "stylesheet": "path/to/style.qss",
-  "mainWindow": {
-    "title": "hello",
-    "geometry": [100, 100, 800, 600],
-    "icon": "path/to/window_icon.svg"
   }
 }
 ```
 
+## Example Usage
 
-## Even Animation
-Ease
-animation
+```python
+import json
+from ui_builder import AppBuilder
 
+def on_login_pressed():
+    print("Login button pressed")
 
-## To make Full Flejed Pyside6 app using json
+# Load UI schema from JSON file
+with open("ui.json", encoding="utf-8") as f:
+    schema = json.load(f)
 
-The current schema covers basic widgets, layout, styling, and simple animations. It is not yet sufficient for a full-fledged PySide6 app with:
+# Create builder and register event handlers
+builder = AppBuilder(schema)
+builder.register_function("on_login_pressed", on_login_pressed)
 
-Nested layouts
-
-Menus, toolbars, dock widgets
-
-Stacked views or routing
-
-Dialogs (modal, file, color, etc.)
-
-Threading (QThread, QRunnable)
-
-Models and views (QTableView, QListView, QTreeView)
-
-MVC/MVVM patterns
-
-Signals/slots across modules
-
-State management
-
-Timers and events
-
-OpenGL/Graphics views
-
-Complex drag/drop
-
-Localization (via .ts files)
-
-Multimedia (audio/video)
-
-System tray
-
-Clipboard, printing, networking
-
-WebEngine support
-
-Settings and persistence
-
-Input validation and forms
-
-Accessibility
-
-## UseCase 
-Build size could significatly reduced due to use of json files to load the ui
-
-## Assumptions 
-This could be used to build only ui only
-
+# Build and run the application
+builder.build()
 ```
+
+## Using with Existing Applications
+
+You can integrate JSON-defined UI components into existing applications:
+
+```python
+import json
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout
+from ui_builder import AppBuilder
+
+# Create your application and main window
+app = QApplication()
+window = QWidget()
+layout = QVBoxLayout()
+
+# Load UI schema
+with open("ui.json", encoding="utf-8") as f:
+    schema = json.load(f)
+
+# Create builder 
+builder = AppBuilder(schema)
+builder.register_function("on_login_pressed", on_login_pressed)
+
+# Get just the UI component from JSON
+ui_component = builder.build_layout(schema["layout"])
+
+# Add it to your existing layout
+layout.addWidget(ui_component)
+window.setLayout(layout)
+window.show()
+
+# Run the application
+app.exec()
+```
+## QSS Styling
+
+To apply QSS styles to your application:
+
+1. Create a QSS file with your styles
+2. In your main.py, load the file:
+
+```python
+app = QApplication()
+try:
+    with open("style.qss", "r") as f:
+        app.setStyleSheet(f.read())
+except FileNotFoundError:
+    print("Warning: style.qss file not found")
+```
+
+## Advanced Features
+
+The framework supports many advanced Qt features through JSON configuration:
+
+### Layout Types
+- QVBoxLayout, QHBoxLayout, QGridLayout, QFormLayout
+
+### Widgets
+- QLabel, QLineEdit, QPushButton, QCheckBox, QRadioButton, etc.
+
+### Events
+Connect events to Python functions:
+```json
+"events": {
+  "clicked": "on_login_pressed"  
+}
+### Models and Views
+
+The schema supports defining data models and views:
+
+```json
+"models": [
+  {
+    "type": "QStandardItemModel",
+    "name": "tableModel",
+    "headers": ["ID", "Name", "Status"],
+    "data": [
+      [1, "Alice", "Active"],
+      [2, "Bob", "Inactive"]
+    ]
+  }
+],
+
+"views": [
+  {
+    "type": "QTableView",
+    "model": "tableModel",
+    "properties": {
+      "alternatingRowColors": true
+    }
+  }
+]
+```
+
+### Dialogs
+
+Define message boxes and custom dialogs:
+
+```json
+"dialogs": [
+  {
+    "type": "QMessageBox",
+    "name": "infoDialog",
+    "title": "Information",
+    "text": "Action completed",
+    "icon": "Information",
+    "buttons": ["Ok"]
+  }
+]
+```
+
+### Menus and Toolbars
+
+```json
+"menus": [
+  {
+    "title": "File",
+    "actions": [
+      { "text": "Open", "event": "on_open_file", "shortcut": "Ctrl+O" },
+      { "text": "Exit", "event": "on_exit" }
+    ]
+  }
+],
+
+"toolbars": [
+  {
+    "title": "Main",
+    "actions": [
+      { "icon": "icons/save.svg", "tooltip": "Save", "event": "on_save" }
+    ]
+  }
+]
+```
+
+## Running Tests
+
+```powershell
+python test_ui_builder.py
+```
+
+### Complete Application Example
+
+```json
 {
   "mainWindow": {
     "title": "MyApp",
@@ -326,7 +359,10 @@ This could be used to build only ui only
     }
   }
 }
-## Checkbox Examples
+```
+
+### Checkbox Examples
+
 ```json
 {
     "ui": {

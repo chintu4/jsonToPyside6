@@ -18,7 +18,12 @@ class AppBuilder:
         self.main_window.setGeometry(100, 100, 800, 600)
         self.setup_central_ui()
         if "stylesheet" in self.config:
-            self.app.setStyleSheet(open(self.config["stylesheet"]).read())
+            try:
+                with open("style.qss", "r") as f:
+                    self.app.setStyleSheet(f.read())
+            except FileNotFoundError:
+                print("Warning: style.qss file not found")
+                # self.app.setStyleSheet(open(self.config["stylesheet"]).read())
         self.main_window.show()
         sys.exit(self.app.exec())
 
